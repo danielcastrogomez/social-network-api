@@ -1,13 +1,17 @@
 package org.casdan.socialnetworkbackend.entities;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
@@ -49,7 +53,12 @@ public class User {
 	@Column
 	@Size(max = 100)
 	private String token;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id")
+	private List<Message> messages;
 
+	
 	@CreatedDate
 	@Column(name = "created_date", nullable = false)
 	private LocalDateTime createdDate;
@@ -58,14 +67,16 @@ public class User {
 		super();
 	}
 
-	public User(Long id, String firstName, String lastName, String login, String password, String token,
-			LocalDateTime createdDate) {
+	public User(Long id, @Size(max = 100) String firstName, @Size(max = 100) String lastName,
+			@Size(max = 100) String login, @Size(max = 100) String password, @Size(max = 100) String token,
+			List<Message> messages, LocalDateTime createdDate) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.login = login;
 		this.password = password;
 		this.token = token;
+		this.messages = messages;
 		this.createdDate = createdDate;
 	}
 
@@ -115,6 +126,14 @@ public class User {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public List<Message> getMessages() {
+		return messages;
+	}
+
+	public void setMessages(List<Message> messages) {
+		this.messages = messages;
 	}
 
 	public LocalDateTime getCreatedDate() {

@@ -8,3 +8,13 @@ create table if not exists social_network_user (
                                                    created_date timestamp
 );
 create sequence if not exists social_network_user_sequence start 1000 increment 1;
+
+
+create table if not exists message (
+                                       id bigserial,
+                                       content text,
+                                       user_id bigint references social_network_user(id),
+                                       created_date timestamp
+);
+
+create sequence if not exists message_sequence start 1000 increment 1;
